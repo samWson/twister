@@ -1,21 +1,5 @@
 # Twister
 
-**TODO: Add description**
+Maze algorithms written in Elixir. Based on the book [Mazes for Programmers](http://www.mazesforprogrammers.com).
 
-## Installation
-
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `twister` to your list of dependencies in `mix.exs`:
-
-```elixir
-def deps do
-  [
-    {:twister, "~> 0.1.0"}
-  ]
-end
-```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/twister>.
-
+The repository is available at [Chisel](https://chiselapp.com/user/samwson/repository/twister/home).
