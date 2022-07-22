@@ -18,6 +18,6 @@ defmodule Twister.Grid do
   defp build_cells(columns, rows) do
     coords = for column <- 1..columns, row <- 1..rows, do: {column, row}
 
-    Map.new(coords, fn {column, row} -> {{column, row}, %Cell{column: column, row: row}} end)
+    Map.new(coords, fn {column, row} -> {{column, row}, Cell.new(column, row)} end)
   end
 end
