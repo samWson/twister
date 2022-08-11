@@ -7,10 +7,10 @@ defmodule Twister.BinaryTree do
   """
   @spec on(grid :: %Grid{}) :: %Grid{}
   def on(grid) do
-    cells = Enum.map(grid.cells, fn {coord, cell} -> {coord, %{ cell | links: [random_direction()] }} end)
+    cells =
+      Enum.map(grid.cells, fn {coord, cell} -> {coord, %{cell | links: [random_direction()]}} end)
 
-
-    %{ grid | cells: Map.new(cells) }
+    %{grid | cells: Map.new(cells)}
   end
 
   defp random_direction() do
