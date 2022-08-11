@@ -20,7 +20,7 @@ defmodule Twister.Grid do
   """
   def to_string(grid) do
     top_boundary_string(grid.columns)
-    |> row_strings(grid.rows, grid.columns)
+    |> row_strings(grid)
     |> Enum.join()
   end
 
@@ -34,16 +34,30 @@ defmodule Twister.Grid do
     )
   end
 
-  defp row_strings(acc, rows, columns) do
-    Enum.reduce(1..rows, acc, fn _, acc -> row_string(acc, columns) end)
+  defp row_strings(acc, grid) do
+    Enum.reduce(1..grid.rows, acc, fn row, acc -> row_string(row, acc, grid) end)
   end
 
-  defp row_string(acc, columns) do
+  defp row_string(row, acc, grid) do
     acc
-    |> Enum.concat([ "|" | Enum.map(1..columns, fn _ -> "   |" end) ])
+    |> row_body_string(row, grid)
     |> Enum.concat(["\n"])
-    |> Enum.concat([ "+" | Enum.map(1..columns, fn _ -> "---+" end) ])
+    |> row_bottom_boundary_string(grid)
     |> Enum.concat(["\n"])
+  end
+
+  defp row_body_string(acc, row, grid) do
+    Enum.concat(acc, [ "|" | Enum.map(1..grid.columns, fn column ->
+        case grid.cells[{column, row}].links do
+          [:east] -> "    "
+          [_] -> "   |"
+        end
+      end)
+    ])
+  end
+
+  defp row_bottom_boundary_string(acc, grid) do
+    Enum.concat(acc, [ "+" | Enum.map(1..grid.columns, fn _ -> "---+" end) ])
   end
 
   defp build_cells(columns, rows) do
