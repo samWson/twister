@@ -72,4 +72,10 @@ defmodule Twister.Grid do
       ])
     end
   end
+
+  defimpl Inspect do
+    def inspect(grid, opts) do
+      Inspect.Algebra.to_doc("#Grid<Columns: #{grid.columns}, Rows: #{grid.rows}>", opts)
+    end
+  end
 end
