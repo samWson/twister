@@ -15,6 +15,24 @@ defmodule Twister.Grid do
     }
   end
 
+  @doc """
+  is_easter_extent() returns true if the given column is the farthest east in
+  the grid.
+  """
+  @spec is_eastern_extent(gird :: %__MODULE__{}, column :: integer()) :: boolean()
+  def is_eastern_extent(grid, column) do
+    grid.columns == column
+  end
+
+  @doc """
+  is_southern_extent() returns true if the given row is the farthest south in
+  the grid.
+  """
+  @spec is_southern_extent(grid :: %__MODULE__{}, row :: integer()) :: boolean()
+  def is_southern_extent(grid, row) do
+    grid.rows == row
+  end
+
   defp build_cells(columns, rows) do
     coords = for column <- 1..columns, row <- 1..rows, do: {column, row}
 
