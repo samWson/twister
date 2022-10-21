@@ -80,8 +80,8 @@ defmodule Twister.Grid do
       Enum.concat(acc, [
         "|"
         | Enum.map(1..grid.columns, fn column ->
-            case grid.cells[{column, row}].links do
-              [:east] -> "    "
+            case :ets.lookup(grid.table, {column, row}) do
+              [{_coords, :east}] -> "    "
               _ -> "   |"
             end
           end)
@@ -92,8 +92,8 @@ defmodule Twister.Grid do
       Enum.concat(acc, [
         "+"
         | Enum.map(1..grid.columns, fn column ->
-            case grid.cells[{column, row}].links do
-              [:south] -> "   +"
+            case :ets.lookup(grid.table, {column, row}) do
+              [{_coords, :south}] -> "   +"
               _ -> "---+"
             end
           end)
