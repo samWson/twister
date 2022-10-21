@@ -1,7 +1,5 @@
 defmodule Twister.Grid do
-  alias Twister.Cell
-
-  defstruct [:cells, :rows, :columns]
+  defstruct [:rows, :columns, :table]
 
   @doc """
   new() returns a grid with the dimensions given in the params.
@@ -9,17 +7,25 @@ defmodule Twister.Grid do
   @spec new(columns :: integer(), rows :: integer()) :: %__MODULE__{}
   def new(columns, rows) do
     %__MODULE__{
-      cells: build_cells(columns, rows),
       columns: columns,
-      rows: rows
+      rows: rows,
+      table: :ets.new(:cells, [])
     }
+  end
+
+  @doc """
+  coordinates() returns all the coordinates of the grid as a list of tuples.
+  """
+  @spec coordinates(grid :: %__MODULE__{}) :: list(tuple())
+  def coordinates(grid) do
+    for column <- 1..grid.columns, row <- 1..grid.rows, do: {column, row}
   end
 
   @doc """
   is_easter_extent() returns true if the given column is the farthest east in
   the grid.
   """
-  @spec is_eastern_extent(gird :: %__MODULE__{}, column :: integer()) :: boolean()
+  @spec is_eastern_extent(grid :: %__MODULE__{}, column :: integer()) :: boolean()
   def is_eastern_extent(grid, column) do
     grid.columns == column
   end
@@ -33,10 +39,14 @@ defmodule Twister.Grid do
     grid.rows == row
   end
 
-  defp build_cells(columns, rows) do
-    coords = for column <- 1..columns, row <- 1..rows, do: {column, row}
+  @doc """
+  link() will link the cell at the given coordinate in the direction provided.
+  """
+  @spec link(grid :: %__MODULE__{}, coord :: tuple(), direction :: atom()) :: %__MODULE__{}
+  def link(grid, coord, direction) do
+    :ets.insert(grid.table, {coord, direction})
 
-    Map.new(coords, fn {column, row} -> {{column, row}, Cell.new(column, row)} end)
+    grid
   end
 
   defimpl String.Chars do

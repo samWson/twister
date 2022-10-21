@@ -7,27 +7,27 @@ defmodule Twister.BinaryTree do
   """
   @spec on(grid :: %Grid{}) :: %Grid{}
   def on(grid) do
-    cells =
-      Enum.map(grid.cells, fn {coord, cell} ->
-        {coord, %{cell | links: link_cell(coord, grid)}}
-      end)
+    Enum.each(Grid.coordinates(grid), fn coord ->
+      link_cell(grid, coord)
+    end)
 
-    %{grid | cells: Map.new(cells)}
+    grid
   end
 
-  defp link_cell({column, row}, grid) do
+  defp link_cell(grid, {column, row} = coord) do
     cond do
       Grid.is_eastern_extent(grid, column) && Grid.is_southern_extent(grid, row) ->
-        []
+        grid
 
       Grid.is_eastern_extent(grid, column) ->
-        [:south]
+        Grid.link(grid, coord, :south)
 
       Grid.is_southern_extent(grid, row) ->
-        [:east]
+        Grid.link(grid, coord, :east)
 
       true ->
-        [Enum.random([:south, :east])]
+        direction = Enum.random([:south, :east])
+        Grid.link(grid, coord, direction)
     end
   end
 end
